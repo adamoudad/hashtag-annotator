@@ -14,10 +14,15 @@ if __name__ == "__main__":
 
     import pickle
     from keras.models import load_model
-    with open("tweet_model.pkl", 'rb') as tm, open("hashtag_model.pkl", 'rb') as hm:
-        tweet_model = pickle.load(tm)
-        hashtag_model = pickle.load(hm)
-    model = load_model("mlp.h5")
+    try:
+        with open("tweet_model.pkl", 'rb') as tm, open("hashtag_model.pkl", 'rb') as hm:
+            tweet_model = pickle.load(tm)
+            hashtag_model = pickle.load(hm)
+        model = load_model("mlp.h5")
+    except:
+        print("Models not found. Training models...")
+        from train import tweet_model, hashtag_model, model
 
-    print(tag(args.tweet, tweet_model, hashtag_model, model))
+    hashtag = tag(args.tweet, tweet_model, hashtag_model, model)
+    print("{}\n#{}".format(args.tweet, hashtag))
 
