@@ -1,5 +1,3 @@
-from prepare import prepare
-
 # Load data
 with open("tweets.txt", 'r') as tweets_file, open("hashtags.txt", 'r') as hashtags_file:
     tweets = []

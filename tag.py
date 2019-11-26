@@ -1,5 +1,4 @@
 import numpy as np
-from prepare import prepare
 
 def tag(tweet, tweet_model, hashtag_model, model):
     x = tweet_model.prepare([tweet])
