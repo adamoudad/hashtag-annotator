@@ -1,5 +1,5 @@
 # Hashtag annotator for Twitter #
-Automatically annotates tweets with hashtags, if tweet is similar to other tweets annotated with the same hashtags.
+Automatically annotates a tweet with hashtag, if the tweet is similar to other tweets annotated with the same hashtags.
 
 # Scripts and pipeline #
 The pipeline in short is download data > train models > annotate tweet.
@@ -10,4 +10,4 @@ The pipeline in short is download data > train models > annotate tweet.
 # About #
 This repository reimplements some of the code I used for my Master thesis *Character-level Convolutional Neural Networks with Gated Recurrent Unit for Twitter Hashtag Prediction* (2017).
 
-For more information, please feel free to  reach me, `my username`@gmail.com
+For more information, feel free to contact me, `my username`@gmail.com
