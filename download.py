@@ -5,16 +5,9 @@ from tweepy import API
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
-# Replace the "None"s by your own credentials
-ACCESS_TOKEN = None
-ACCESS_TOKEN_SECRET = None
-CONSUMER_KEY = None
-CONSUMER_SECRET = None
+from credentials import ACCESS_TOKEN, ACCESS_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET
+from datum import Tweet
 
-auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-api = API(auth, wait_on_rate_limit=True,
-          wait_on_rate_limit_notify=True)
 
 class Listener(StreamListener):
     def __init__(self, output_file=sys.stdout):
@@ -26,16 +19,27 @@ class Listener(StreamListener):
         print(status_code)
         return False
 
-output = open('stream_output.txt', 'w')
-listener = Listener(output_file=output)
+if __name__ == "__main__":
+    auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    api = API(auth, wait_on_rate_limit=True,
+              wait_on_rate_limit_notify=True)
 
-stream = Stream(auth=api.auth, listener=listener)
-try:
-    print('Start streaming.')
-    stream.sample(languages=['en'])
-except KeyboardInterrupt:
-    print("Stopped.")
-finally:
-    print('Done.')
-    stream.disconnect()
-    output.close()
+    from argparse import ArgumentParser, FileType
+    parser = ArgumentParser()
+    parser.add_argument('outfile', nargs='?'
+                    , type=FileType('w'), default=sys.stdout)
+    args = parser.parse_args()
+    
+    listener = Listener(output_file=args.outfile)
+
+    stream = Stream(auth=api.auth, listener=listener)
+    try:
+        print('Start streaming.')
+        stream.sample(languages=['en'])
+    except KeyboardInterrupt:
+        print("Stopped.")
+    finally:
+        print('Done.')
+        stream.disconnect()
+        args.outfile.close()
