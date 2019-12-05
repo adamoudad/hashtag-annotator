@@ -14,7 +14,11 @@ class Listener(StreamListener):
         super(Listener,self).__init__()
         self.output_file = output_file
     def on_status(self, status):
-        print(status.text, file=self.output_file)
+        tweet = Tweet(status.text)
+        if not(tweet.isTagged()) or tweet.isRT():
+            return None, None
+        else:
+            print(tweet.format(), file=self.output_file)
     def on_error(self, status_code):
         print(status_code)
         return False
